@@ -1,6 +1,10 @@
 import pandas as pd
 import requests
 
+## huntington----
+test_cert = 6560
+test_rssd = 12311
+
 base_url = "https://banks.data.fdic.gov/api/"
 
 ### get all institutions that have ever existed-------
@@ -38,21 +42,18 @@ def all_active_institutions():
 
     locations = pd.read_csv(locations_url)
 
-
-
 ### get financials for given CERT------
 ### https://banks.data.fdic.gov/docs/#/operations/Financials/getFinancials
 #### ^ link has a list of variables---is it the full list from the SDI data source?
 
-## huntington----
-test_cert = 6560
-test_rssd = 12311
-
 ### lets try pulling everything------
 ### maybe not possible---stops with an error (Extra data: line 1 column 5 (char 4))
 ## maybe loop through list of certs
-## following works, amybe loop through all RSSDIDs and append to dataframe
+## following works, maybe loop through all RSSDIDs and append to dataframe
 ## looks like I can get all active banks with an institutions query with ACTIVE:1 filter
+
+def financials(quarter, rssds):
+
 hban = requests.get(base_url + 'financials', params={'filters':'REPDTE:20220630 AND RSSDID:12311', 'limit':10}).json()['data']
 
 hban_df = pd.concat([pd.DataFrame(hban[i]) for i in range(len(hban))], 1)
