@@ -35,12 +35,6 @@ def all_active_institutions() -> pd.DataFrame:
     return(all_active_institutions)
 
 
-### get all branch locations-------
-### there are 4801 unique CERTs, so maybe this is all *current* locations
-
-    locations_url = "https://s3-us-gov-west-1.amazonaws.com/cg-2e5c99a6-e282-42bf-9844-35f5430338a5/downloads/locations.csv"
-
-    locations = pd.read_csv(locations_url)
 
 ### get financials for given CERT------
 ### https://banks.data.fdic.gov/docs/#/operations/Financials/getFinancials
@@ -52,11 +46,21 @@ def all_active_institutions() -> pd.DataFrame:
 ## following works, maybe loop through all RSSDIDs and append to dataframe
 ## looks like I can get all active banks with an institutions query with ACTIVE:1 filter
 
-def financials(quarter, rssds):
+def all_financials_for_quarter(quarter, rssds):
 
-hban = requests.get(base_url + 'financials', params={'filters':'REPDTE:20220630 AND RSSDID:12311', 'limit':10}).json()['data']
+    hban = requests.get(base_url + 'financials', params={'filters':'REPDTE:20220630 AND RSSDID:12311', 'limit':10}).json()['data']
+    
+    hban_df = pd.concat([pd.DataFrame(hban[i]) for i in range(len(hban))], 1)
+    hban_df = hban_df.drop(["score"], 1)
+    hban_df.columns = hban_df.loc["RSSDID"]
+    hban_df = hban_df.transpose()
 
-hban_df = pd.concat([pd.DataFrame(hban[i]) for i in range(len(hban))], 1)
-hban_df = hban_df.drop(["score"], 1)
-hban_df.columns = hban_df.loc["RSSDID"]
-hban_df = hban_df.transpose()
+
+
+
+### get all branch locations-------
+### there are 4801 unique CERTs, so maybe this is all *current* locations
+
+    locations_url = "https://s3-us-gov-west-1.amazonaws.com/cg-2e5c99a6-e282-42bf-9844-35f5430338a5/downloads/locations.csv"
+
+    locations = pd.read_csv(locations_url)
