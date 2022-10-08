@@ -20,8 +20,8 @@ def all_institutions():
 
     return(institutions)
 
-def all_active_institutions():
-    """Get demographic data for all active institutions.
+def all_active_institutions() -> pd.DataFrame:
+    r"""Get demographic data for all active institutions.
     Arguments: none
     Returns: dataframe with RSSD as index and columns are demographic info.
     Status: working
