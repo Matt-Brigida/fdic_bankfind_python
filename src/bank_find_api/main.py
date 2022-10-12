@@ -32,7 +32,7 @@ def all_active_institutions() -> pd.DataFrame:
     active_institutions_df = active_institutions_df.drop(["score"], 1)
     active_institutions_df.columns = active_institutions_df.loc["FED_RSSD"]
     active_institutions_df = active_institutions_df.transpose()
-    return(all_active_institutions)
+    return(active_institutions_df)
 
 
 
@@ -44,9 +44,10 @@ def all_active_institutions() -> pd.DataFrame:
 ### maybe not possible---stops with an error (Extra data: line 1 column 5 (char 4))
 ## maybe loop through list of certs
 ## following works, maybe loop through all RSSDIDs and append to dataframe
+### hban = requests.get(base_url + 'financials', params={'filters':'REPDTE:20220630 AND RSSDID:12311', 'limit':10}).json()['data']
 ## looks like I can get all active banks with an institutions query with ACTIVE:1 filter
 
-def all_financials_for_quarter(quarter, rssds):
+def all_financials_for_quarter(quarter, rssds): # quarter string and rssds list
 
     hban = requests.get(base_url + 'financials', params={'filters':'REPDTE:20220630 AND RSSDID:12311', 'limit':10}).json()['data']
     
