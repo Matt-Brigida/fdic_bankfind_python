@@ -1,5 +1,6 @@
 import pandas as pd
 import requests
+import time
 
 ## huntington----
 test_cert = 6560
@@ -66,6 +67,7 @@ def all_financials_for_quarter(quarter, rssds): # quarter string and rssds list
         df1 = df1.transpose()
         #result_df.loc[j] = df1
         result_df = pd.concat([result_df, df1], ignore_index=True)
+        time.sleep(5)
 
     return(result_df)
 
