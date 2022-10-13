@@ -3,7 +3,7 @@ import requests
 
 ## huntington----
 test_cert = 6560
-test_rssd = 12311
+test_rssd = ['12311']
 
 base_url = "https://banks.data.fdic.gov/api/"
 
@@ -49,12 +49,25 @@ def all_active_institutions() -> pd.DataFrame:
 
 def all_financials_for_quarter(quarter, rssds): # quarter string and rssds list
 
-    hban = requests.get(base_url + 'financials', params={'filters':'REPDTE:20220630 AND RSSDID:12311', 'limit':10}).json()['data']
-    
-    hban_df = pd.concat([pd.DataFrame(hban[i]) for i in range(len(hban))], 1)
-    hban_df = hban_df.drop(["score"], 1)
-    hban_df.columns = hban_df.loc["RSSDID"]
-    hban_df = hban_df.transpose()
+    ## first get list of columns-------
+
+    temp = requests.get(base_url + 'financials', params={'filters':'REPDTE:'+quarter+' AND RSSDID:'+str('12311'), 'limit':10}).json()['data']
+    temp1 = pd.concat([pd.DataFrame(temp[i]) for i in range(len(temp))], 1)
+    temp1 = temp1.drop(["score"], 1)
+    #temp1.columns = temp1.loc["RSSDID"]
+    temp1 = temp1.transpose()
+    result_df = pd.DataFrame(columns=list(temp1.columns))  # temp1
+
+    for j in range(len(rssds)):
+        ll = requests.get(base_url + 'financials', params={'filters':'REPDTE:'+quarter+' AND RSSDID:'+str(rssds[j]), 'limit':10}).json()['data']    
+        df1 = pd.concat([pd.DataFrame(ll[i]) for i in range(len(ll))], 1)
+        df1 = df1.drop(["score"], 1)
+        #df1.columns = df1.loc["RSSDID"]
+        df1 = df1.transpose()
+        #result_df.loc[j] = df1
+        result_df = pd.concat([result_df, df1], ignore_index=True)
+
+    return(result_df)
 
 
 
