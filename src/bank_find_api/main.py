@@ -49,7 +49,13 @@ def all_active_institutions() -> pd.DataFrame:
 ## looks like I can get all active banks with an institutions query with ACTIVE:1 filter
 
 def all_financials_for_quarter(quarter, rssds): # quarter string and rssds list
-
+    r"""Get Financial Data for a list of banks over a given quarter.
+    Arguments: 
+        - quarter: string in YYYYMMDD format
+        - rssds: list of integer rssds
+    Returns: dataframe 
+    Status: not yet working
+    """
     ## first get list of columns-------
 
     temp = requests.get(base_url + 'financials', params={'filters':'REPDTE:'+quarter+' AND RSSDID:'+str('12311'), 'limit':10}).json()['data']
