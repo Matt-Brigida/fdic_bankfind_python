@@ -2,10 +2,6 @@ import pandas as pd
 import requests
 import time
 
-## huntington----
-test_cert = 6560
-test_rssd = ['12311']
-
 base_url = "https://banks.data.fdic.gov/api/"
 
 ### get all institutions that have ever existed-------
@@ -54,7 +50,7 @@ def all_financials_for_quarter(quarter, rssds): # quarter string and rssds list
         - quarter: string in YYYYMMDD format
         - rssds: list of integer rssds
     Returns: dataframe 
-    Status: not yet working
+    Status: Worked for short list.  Need to handle errors.
     """
     ## first get list of columns-------
 
