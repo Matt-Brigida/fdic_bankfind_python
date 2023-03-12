@@ -33,16 +33,9 @@ def all_active_institutions() -> pd.DataFrame:
 
 
 
-### get financials for given CERT------
+### get financials for given RSSD------
 ### https://banks.data.fdic.gov/docs/#/operations/Financials/getFinancials
 #### ^ link has a list of variables---is it the full list from the SDI data source?
-
-### lets try pulling everything------
-### maybe not possible---stops with an error (Extra data: line 1 column 5 (char 4))
-## maybe loop through list of certs
-## following works, maybe loop through all RSSDIDs and append to dataframe
-### hban = requests.get(base_url + 'financials', params={'filters':'REPDTE:20220630 AND RSSDID:12311', 'limit':10}).json()['data']
-## looks like I can get all active banks with an institutions query with ACTIVE:1 filter
 
 def all_financials_for_quarter(quarter, rssds): # quarter string and rssds list
     r"""Get Financial Data for a list of banks over a given quarter.
@@ -62,14 +55,17 @@ def all_financials_for_quarter(quarter, rssds): # quarter string and rssds list
     result_df = pd.DataFrame(columns=list(temp1.columns))  # temp1
 
     for j in range(len(rssds)):
-        ll = requests.get(base_url + 'financials', params={'filters':'REPDTE:'+quarter+' AND RSSDID:'+str(rssds[j]), 'limit':10}).json()['data']    
-        df1 = pd.concat([pd.DataFrame(ll[i]) for i in range(len(ll))], 1)
-        df1 = df1.drop(["score"], 1)
-        #df1.columns = df1.loc["RSSDID"]
-        df1 = df1.transpose()
-        #result_df.loc[j] = df1
-        result_df = pd.concat([result_df, df1], ignore_index=True)
-        time.sleep(5)
+        try:
+            ll = requests.get(base_url + 'financials', params={'filters':'REPDTE:'+quarter+' AND RSSDID:'+str(rssds[j]), 'limit':10}).json()['data']    
+            df1 = pd.concat([pd.DataFrame(ll[i]) for i in range(len(ll))], 1)
+            df1 = df1.drop(["score"], 1)
+            #df1.columns = df1.loc["RSSDID"]
+            df1 = df1.transpose()
+            #result_df.loc[j] = df1
+            result_df = pd.concat([result_df, df1], ignore_index=True)
+            time.sleep(10)
+        except:
+            pass
 
     return(result_df)
 
