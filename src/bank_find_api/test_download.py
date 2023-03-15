@@ -1,6 +1,6 @@
 import pandas as pd
 import requests
-from time import sleep
+import time
 
 from get_institutions import all_active_institutions
 from get_financials import all_financials_for_quarter

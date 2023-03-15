@@ -26,7 +26,7 @@ def all_financials_for_quarter(quarter, rssds): # quarter string and rssds list
     result_df = pd.DataFrame(columns=list(temp1.columns))  # temp1
 
     for j in range(len(rssds)):
-        time.sleep(10.0)
+        #time.sleep(10.0)
         try:
 	        ll = requests.get(base_url + 'financials', params={'filters':'REPDTE:'+quarter+' AND RSSDID:'+str(rssds[j]), 'limit':10}).json()['data']    
 	        df1 = pd.concat([pd.DataFrame(ll[i]) for i in range(len(ll))], 1)
@@ -35,6 +35,7 @@ def all_financials_for_quarter(quarter, rssds): # quarter string and rssds list
 	        result_df = pd.concat([result_df, df1], ignore_index=True)            
 	        #time.sleep(10.0)
 	        print("Done with " + str(rssds[j]) + ". Which is " + str(round(100*j/len(rssds), 2)) + "% of the way through.\n", flush=True)
+	        time.sleep(10.0)
         except:
             pass
 
