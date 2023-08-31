@@ -11,3 +11,7 @@ The goal of this package is to replicate the earlier service.  That is, to downl
 ##  A More Targeted Package
 
 If you want a package that offers targeted queries (the way the API is intended to be used) I would recommend: https://github.com/dpguthrie/bankfind 
+
+# Install
+
+The package is not yet on ppi.  You can clone the repo and `python -m build` in the director with `pyproject.toml`.  Install the .whl with `pip install` and the you can `from bulkcr import get_institutions` for example.
