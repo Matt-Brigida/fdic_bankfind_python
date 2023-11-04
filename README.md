@@ -14,4 +14,4 @@ If you want a package that offers targeted queries (the way the API is intended 
 
 # Install
 
-The package is not yet on ppi.  You can clone the repo and `python -m build` in the director with `pyproject.toml`.  Install the .whl with `pip install` and the you can `from bulkcr import get_institutions` for example.
+The package is not on PyPi (which now requires a 2FA authenticator app which I haven't gotten around to installing).  To install then package you can clone the repo and `python -m build` in the directory with `pyproject.toml`.  Install the .whl with `pip install` and the you can `from bulkcr import get_institutions` for example.
