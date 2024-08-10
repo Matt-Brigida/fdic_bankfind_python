@@ -29,8 +29,8 @@ def all_active_institutions() -> pd.DataFrame:
     """
     active_institutions = requests.get(base_url + 'institutions', params={'filters':'ACTIVE:1', 'limit':6000}).json()['data']
 
-    active_institutions_df = pd.concat([pd.DataFrame(active_institutions[i]) for i in range(len(active_institutions))], 1)
-    active_institutions_df = active_institutions_df.drop(["score"], 1)
+    active_institutions_df = pd.concat([pd.DataFrame(active_institutions[i]) for i in range(len(active_institutions))], axis=1)
+    active_institutions_df = active_institutions_df.drop(["score"], axis=1)
     active_institutions_df.columns = active_institutions_df.loc["FED_RSSD"]
     active_institutions_df = active_institutions_df.transpose()
     return(active_institutions_df)
